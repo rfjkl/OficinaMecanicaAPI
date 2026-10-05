@@ -13,11 +13,11 @@
   "license": "ISC",
   "author": "rfjkl",
   "type": "module",
-  "main": "app/app.js",
+  "main": "src/app.js",
   "scripts": {
-    "start" : "node app/app.js"
+    "start" : "node src/app.js"
   },
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1pn"
   }
 }
