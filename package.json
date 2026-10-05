@@ -15,9 +15,12 @@
   "type": "module",
   "main": "src/app.js",
   "scripts": {
-    "start" : "node src/app.js"
+    "dev": "node --watch src/app.js",
+    "db:init": "node src/database/init.js",
+    "start": "node src/app.js"
   },
   "dependencies": {
-    "express": "^5.2.1pn"
+    "express": "^5.2.1pn",
+    "mysql2": "^3.24.5"
   }
 }

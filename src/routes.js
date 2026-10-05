@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import db from './database.js';
 
 const router = Router();
 
@@ -6,12 +7,10 @@ router.get('/', (req, res) => {
   res.send('Home');
 });
 
-router.get('/users', (req, res) => {
-  res.send('Usuários');
-});
+router.get('/veiculo', async (req, res) => {
+  const [users] = await db.query('SELECT * FROM veiculos');
 
-router.post('/users', (req, res) => {
-  res.send('Criar usuário');
+  res.json(users);
 });
 
 export default router;
