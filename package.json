@@ -1,0 +1,23 @@
+{
+  "name": "prova2crud",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/rfjkl/OficinaMecanicaAPI#readme",
+  "bugs": {
+    "url": "https://github.com/rfjkl/OficinaMecanicaAPI/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rfjkl/OficinaMecanicaAPI.git"
+  },
+  "license": "ISC",
+  "author": "rfjkl",
+  "type": "module",
+  "main": "app/app.js",
+  "scripts": {
+    "start" : "node app/app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
