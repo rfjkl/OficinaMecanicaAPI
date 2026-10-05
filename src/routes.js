@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import db from './database.js';
+
+import VeiculoController from './controller.js';
 
 const router = Router();
 
@@ -7,10 +8,13 @@ router.get('/', (req, res) => {
   res.send('Home');
 });
 
-router.get('/veiculo', async (req, res) => {
-  const [users] = await db.query('SELECT * FROM veiculos');
+router.get('/veiculo', VeiculoController.getVeiculos);
+router.get('/veiculo/:id', VeiculoController.getVeiculoById);
 
-  res.json(users);
-});
+router.post('/veiculo', VeiculoController.createVeiculo);
+
+router.put('/veiculo/:id', VeiculoController.updateVeiculo);
+
+router.delete('/veiculo/:id', VeiculoController.deleteVeiculo);
 
 export default router;

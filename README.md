@@ -126,3 +126,226 @@ Depois disso, basta iniciar a API:
 ```bash
 npm run dev
 ```
+
+
+## Testes da API
+
+Com o MySQL e a API em execução:
+
+```bash
+docker compose up -d
+npm install
+npm run db:init
+npm run dev
+```
+
+A API estará disponível em:
+
+```text
+http://localhost:3000
+```
+
+### 1. Testar a rota inicial
+
+```bash
+curl http://localhost:3000/
+```
+
+Resposta esperada:
+
+```text
+Home
+```
+
+### 2. Listar veículos
+
+```bash
+curl http://localhost:3000/veiculo
+```
+
+Resposta esperada:
+
+```json
+{
+  "success": true,
+  "data": []
+}
+```
+
+### 3. Criar um veículo
+
+```bash
+curl -X POST http://localhost:3000/veiculo \
+  -H "Content-Type: application/json" \
+  -d '{
+    "placa": "ABC1D23",
+    "modelo": "Toyota Corolla",
+    "proprietario": "João da Silva"
+  }'
+```
+
+Resposta esperada:
+
+```json
+{
+  "success": true,
+  "message": "Veículo criado com sucesso",
+  "data": {
+    "id": 1,
+    "placa": "ABC1D23",
+    "modelo": "Toyota Corolla",
+    "proprietario": "João da Silva"
+  }
+}
+```
+
+### 4. Buscar veículo pelo ID
+
+```bash
+curl http://localhost:3000/veiculo/1
+```
+
+Resposta esperada:
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "placa": "ABC1D23",
+    "modelo": "Toyota Corolla",
+    "proprietario": "João da Silva"
+  }
+}
+```
+
+### 5. Atualizar um veículo
+
+```bash
+curl -X PUT http://localhost:3000/veiculo/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "placa": "ABC1D23",
+    "modelo": "Toyota Corolla XEi",
+    "proprietario": "João da Silva"
+  }'
+```
+
+Resposta esperada:
+
+```json
+{
+  "success": true,
+  "message": "Veículo atualizado com sucesso",
+  "data": {
+    "id": 1,
+    "placa": "ABC1D23",
+    "modelo": "Toyota Corolla XEi",
+    "proprietario": "João da Silva"
+  }
+}
+```
+
+### 6. Listar novamente os veículos
+
+```bash
+curl http://localhost:3000/veiculo
+```
+
+Agora o veículo atualizado deverá aparecer na lista.
+
+### 7. Excluir um veículo
+
+```bash
+curl -X DELETE http://localhost:3000/veiculo/1
+```
+
+Resposta esperada:
+
+```json
+{
+  "success": true,
+  "message": "Veículo excluído com sucesso"
+}
+```
+
+### 8. Confirmar exclusão
+
+```bash
+curl http://localhost:3000/veiculo/1
+```
+
+Resposta esperada:
+
+```json
+{
+  "success": false,
+  "error": "Veículo não encontrado"
+}
+```
+
+### 9. Testar erro de veículo inexistente
+
+```bash
+curl http://localhost:3000/veiculo/999
+```
+
+Deve retornar HTTP `404`.
+
+### 10. Testar validação de campos
+
+```bash
+curl -X POST http://localhost:3000/veiculo \
+  -H "Content-Type: application/json" \
+  -d '{
+    "placa": "XYZ9A99"
+  }'
+```
+
+Resposta esperada:
+
+```json
+{
+  "success": false,
+  "error": "Placa, modelo e proprietário são obrigatórios"
+}
+```
+
+Esse teste deve retornar HTTP `400`.
+
+### 11. Testar placa duplicada
+
+Primeiro crie um veículo:
+
+```bash
+curl -X POST http://localhost:3000/veiculo \
+  -H "Content-Type: application/json" \
+  -d '{
+    "placa": "XYZ9A99",
+    "modelo": "Honda Civic",
+    "proprietario": "Maria Oliveira"
+  }'
+```
+
+Depois tente cadastrar outro veículo com a mesma placa:
+
+```bash
+curl -X POST http://localhost:3000/veiculo \
+  -H "Content-Type: application/json" \
+  -d '{
+    "placa": "XYZ9A99",
+    "modelo": "Volkswagen Gol",
+    "proprietario": "Carlos Santos"
+  }'
+```
+
+Resposta esperada:
+
+```json
+{
+  "success": false,
+  "error": "Já existe um veículo com essa placa"
+}
+```
+
+Esse teste deve retornar HTTP `409`.
